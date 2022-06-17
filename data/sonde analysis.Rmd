@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
+library(lubridate)
 sn811761 <- read.csv("sn811761.csv", skip=25)
 sn461132 <- read.csv("sn461132.csv", skip=25)
 sn788735 <- read.csv("sn788735.csv", skip=25)
@@ -22,7 +23,7 @@ sn461051 <- read.csv("sn461051.csv", skip=25)
 
 ## Comparing
 
-```{r echo=FALSE, fig.height = 5, fig.width = 10, fig.align = "center"}
+```{r echo=FALSE, fig.height = 5, fig.width = 10, fig.align = "center", warning=FALSE, message=FALSE}
 thesenames <- c ("Date Time", "Actual Conductivity (µS/cm)", "Specific Conductivity (µS/cm)", "Salinity (PSU)", "Resistivity (Ω⋅cm)", "Density (g/cm³)", "Total Dissolved Solids (ppt)", "Chlorophyll-a Fluorescence (RFU)", "RDO Concentration (mg/L)", "RDO Saturation (%Sat)", "Oxygen Partial Pressure (Torr)", "pH", "pH mV", "ORP (mV)", "Temperature (°C)", "External Voltage (V)", "Battery Capacity (%)", "Barometric Pressure (mm Hg)", "Pressure (psi)", "Depth (m)", "new_col")
 sn461051$new_col <- "461051"
 sn461132$new_col <- "461132"
@@ -35,22 +36,36 @@ names(sn811737) = thesenames
 names(sn811761) = thesenames
 names(sn788735) = thesenames
 fulldata <- bind_rows(sn811737, sn461051, sn811761, sn461132, sn788735)
-ggplot(data = fulldata, aes(`Date Time`, `pH`, group=new_col))+ geom_line(aes(color=new_col))+ 
+fulldata$`Date Time` <- mdy_hm(fulldata$`Date Time`)
+ggplot(data = fulldata, aes(`Date Time`, `pH`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(7.45, 8.25)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Actual Conductivity (µS/cm)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+ 
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Actual Conductivity (µS/cm)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ 
+  ylim(40000, 50000)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Salinity (PSU)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+ 
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Salinity (PSU)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(32, 36)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Chlorophyll-a Fluorescence (RFU)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+ 
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Chlorophyll-a Fluorescence (RFU)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim (0.0, 0.03)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `RDO Saturation (%Sat)`, group=new_col))+ geom_line(aes(color=new_col))+
+  guides(color=guide_legend(title="Sonde"))+
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `RDO Saturation (%Sat)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(30, 120)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Temperature (°C)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Temperature (°C)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(17,22.5)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
+  guides(color=guide_legend(title="Sonde"))+
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
 ```

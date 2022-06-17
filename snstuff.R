@@ -1,6 +1,7 @@
 ## aqua troll data 06-14-2022 (mesocosm test)
 # load in all data
 library(tidyverse)
+library(lubridate)
 setwd("~/Desktop/project catch all pt2/oyster proj")
 raw.dir <- here::here("data")
 sn811761 <- read.csv(here::here("data/sn811761.csv"), skip=25)
@@ -26,22 +27,37 @@ names(sn811737) = thesenames
 names(sn811761) = thesenames
 names(sn788735) = thesenames
 fulldata <- bind_rows(sn811737, sn461051, sn811761, sn461132, sn788735)
+#change date column to actual date format 
+fulldata$`Date Time` <- mdy_hm(fulldata$`Date Time`)
 #start plottingggg
-ggplot(data = fulldata, aes(`Date Time`, `pH`, group=new_col))+ geom_line(aes(color=new_col))+ 
+ggplot(data = fulldata, aes(`Date Time`, `pH`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(7.45, 8.25)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Actual Conductivity (µS/cm)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+ 
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Actual Conductivity (µS/cm)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ 
+  ylim(40000, 50000)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Salinity (PSU)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+ 
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Salinity (PSU)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(32, 36)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Chlorophyll-a Fluorescence (RFU)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+ 
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Chlorophyll-a Fluorescence (RFU)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim (0.0, 0.03)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `RDO Saturation (%Sat)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `RDO Saturation (%Sat)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(30, 120)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
-ggplot(data = fulldata, aes(`Date Time`, `Temperature (°C)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  guides(color=guide_legend(title="Sonde"))+
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
+ggplot(data = fulldata, aes(`Date Time`, `Temperature (°C)`, group=new_col))+ 
+  geom_line(aes(color=new_col))+ ylim(17,22.5)+
   theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
-  guides(color=guide_legend(title="Sonde"))
+  guides(color=guide_legend(title="Sonde"))+
+  scale_x_datetime(date_minor_breaks = "1 hour", date_labels = "%T")+ labs(x = "Time")
