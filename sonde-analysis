@@ -1,37 +1,55 @@
-## Welcome to GitHub Pages
+---
+title: "Sonde Analysis"
+author: "Rhegan Thomason"
+date: '2022-06-17'
+output:
+  html_document: default
+---
 
-You can use the [editor on GitHub](https://github.com/rheganthomason/oyster-repo/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-### Jekyll Themes
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+sn811761 <- read.csv("sn811761.csv", skip=25)
+sn461132 <- read.csv("sn461132.csv", skip=25)
+sn788735 <- read.csv("sn788735.csv", skip=25)
+sn811737 <- read.csv("sn811737.csv", skip=25)
+sn461051 <- read.csv("sn461051.csv", skip=25)
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/rheganthomason/oyster-repo/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Comparing
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+```{r echo=FALSE, fig.height = 5, fig.width = 10, fig.align = "center"}
+thesenames <- c ("Date Time", "Actual Conductivity (µS/cm)", "Specific Conductivity (µS/cm)", "Salinity (PSU)", "Resistivity (Ω⋅cm)", "Density (g/cm³)", "Total Dissolved Solids (ppt)", "Chlorophyll-a Fluorescence (RFU)", "RDO Concentration (mg/L)", "RDO Saturation (%Sat)", "Oxygen Partial Pressure (Torr)", "pH", "pH mV", "ORP (mV)", "Temperature (°C)", "External Voltage (V)", "Battery Capacity (%)", "Barometric Pressure (mm Hg)", "Pressure (psi)", "Depth (m)", "new_col")
+sn461051$new_col <- "461051"
+sn461132$new_col <- "461132"
+sn811761$new_col <- "811761"
+sn811737$new_col <- "811737"
+sn788735$new_col <- "788735"
+names(sn461051) = thesenames
+names(sn461132) = thesenames
+names(sn811737) = thesenames
+names(sn811761) = thesenames
+names(sn788735) = thesenames
+fulldata <- bind_rows(sn811737, sn461051, sn811761, sn461132, sn788735)
+ggplot(data = fulldata, aes(`Date Time`, `pH`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
+  guides(color=guide_legend(title="Sonde"))
+ggplot(data = fulldata, aes(`Date Time`, `Actual Conductivity (µS/cm)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
+  guides(color=guide_legend(title="Sonde"))
+ggplot(data = fulldata, aes(`Date Time`, `Salinity (PSU)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
+  guides(color=guide_legend(title="Sonde"))
+ggplot(data = fulldata, aes(`Date Time`, `Chlorophyll-a Fluorescence (RFU)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
+  guides(color=guide_legend(title="Sonde"))
+ggplot(data = fulldata, aes(`Date Time`, `RDO Saturation (%Sat)`, group=new_col))+ geom_line(aes(color=new_col))+
+  theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
+  guides(color=guide_legend(title="Sonde"))
+ggplot(data = fulldata, aes(`Date Time`, `Temperature (°C)`, group=new_col))+ geom_line(aes(color=new_col))+ 
+  theme(axis.text.x = element_text(angle = 75, hjust=1, size = 7))+ 
+  guides(color=guide_legend(title="Sonde"))
