@@ -21,7 +21,7 @@ sn811737 <- read.csv("sn811737.csv", skip=25)
 sn461051 <- read.csv("sn461051.csv", skip=25)
 ```
 
-## Comparing
+## Comparing Calibrations
 
 ```{r echo=FALSE, fig.height = 5, fig.width = 10, fig.align = "center", warning=FALSE, message=FALSE}
 thesenames <- c ("Date Time", "Actual Conductivity (µS/cm)", "Specific Conductivity (µS/cm)", "Salinity (PSU)", "Resistivity (Ω⋅cm)", "Density (g/cm³)", "Total Dissolved Solids (ppt)", "Chlorophyll-a Fluorescence (RFU)", "RDO Concentration (mg/L)", "RDO Saturation (%Sat)", "Oxygen Partial Pressure (Torr)", "pH", "pH mV", "ORP (mV)", "Temperature (°C)", "External Voltage (V)", "Battery Capacity (%)", "Barometric Pressure (mm Hg)", "Pressure (psi)", "Depth (m)", "new_col")

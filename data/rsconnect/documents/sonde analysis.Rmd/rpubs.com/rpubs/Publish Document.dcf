@@ -6,6 +6,6 @@ server: rpubs.com
 hostUrl: rpubs.com
 appId: https://api.rpubs.com/api/v1/document/915596/98a35554c13b4471a5448f83b7ea4984
 bundleId: https://api.rpubs.com/api/v1/document/915596/98a35554c13b4471a5448f83b7ea4984
-url: http://rpubs.com/publish/claim/915596/14c69c276c5b4e7d9dca2b5d53174f34
-when: 1655432126.10377
-lastSyncTime: 1655432126.10379
+url: http://rpubs.com/rheganthomason/915596
+when: 1655493042.83514
+lastSyncTime: 1655493042.83516
